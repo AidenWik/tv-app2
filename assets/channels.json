@@ -11,32 +11,15 @@
       {
         "id": "item-1",
         "indent": 0,
-        "location": "hax-wp-killer.html",
+        "location": "../assets/1.html",
         "slug": "hax-wp-killer",
         "order": 0,
         "parent": null,
-        "title": "HAX: Wordpress Killer",
+        "title": "This is water!!",
         "description": "The future we need, not the future we have.",
         "metadata": {
           "source": "https://www.youtube.com/watch?v=9MT-BNuUCpM",
-          "timecode": 0,
-          "author":"Bryan Ollendyke",
-          "created": 1697033522,
-          "updated": 1697034021
-        }
-      },
-      {
-        "id": "item-3421",
-        "indent": 0,
-        "location": "hax-wp-killer.html",
-        "slug": "hax-wp-killer",
-        "order": 0,
-        "parent": null,
-        "title": "HAX: sdffs sdsffsf",
-        "description": "The future we need, not the future we have.",
-        "metadata": {
-          "source": "https://www.youtube.com/watch?v=9MT-BNuUCpM",
-          "timecode": 0,
+          "timecode": 75,
           "author":"Bryan Ollendyke",
           "created": 1697033522,
           "updated": 1697034021
@@ -45,7 +28,41 @@
       {
         "id": "item-2",
         "indent": 0,
-        "location": "this-is-water.html",
+        "location": "../assets/2.html",
+        "slug": "hax-wp-killer",
+        "order": 0,
+        "parent": null,
+        "title": "This is water!",
+        "description": "The future we need, not the future we have.",
+        "metadata": {
+          "source": "https://www.youtube.com/watch?v=9MT-BNuUCpM",
+          "timecode": 5,
+          "author":"Bryan Ollendyke",
+          "created": 1697033522,
+          "updated": 1697034021
+        }
+      },
+      {
+        "id": "item-3",
+        "indent": 0,
+        "location": "../assets/3.html",
+        "slug": "hax-wp-killer",
+        "order": 0,
+        "parent": null,
+        "title": "This is water",
+        "description": "The future we need, not the future we have.",
+        "metadata": {
+          "source": "https://www.youtube.com/watch?v=9MT-BNuUCpM",
+          "timecode": 25,
+          "author":"Bryan Ollendyke",
+          "created": 1697033522,
+          "updated": 1697034021
+        }
+      },
+      {
+        "id": "item-4",
+        "indent": 0,
+        "location": "../assets/4.html",
         "slug": "this-is-water",
         "order": 0,
         "parent": null,
