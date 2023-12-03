@@ -1,17 +1,18 @@
 // import stuff
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css } from "lit";
 
 export class TvChannel extends LitElement {
   // defaults
   constructor() {
     super();
-    this.title = '';
-    this.presenter = '';
-    this.location = '';
+    this.title = "";
+    this.presenter = "";
+    this.id = "";
+
   }
   // convention I enjoy using to define the tag's name
   static get tag() {
-    return 'tv-channel';
+    return "tv-channel";
   }
   // LitElement convention so we update render() when values change
   static get properties() {
@@ -19,14 +20,17 @@ export class TvChannel extends LitElement {
       title: { type: String },
       presenter: { type: String },
       location: { type: String },
+
     };
   }
+
   // LitElement convention for applying styles JUST to our element
   static get styles() {
     return css`
       :host {
         display: inline-flex;
       }
+
       .wrapper {
         height: 100%;
         width: 60%;
@@ -51,19 +55,25 @@ export class TvChannel extends LitElement {
         font-weight: 600;
         box-shadow: 0 1px 2px 0 rgba(60,64,67,.3), 0 2px 6px 2px rgba(60,64,67,.15);
 }
-
-    `;
+`;
   }
+
   // LitElement rendering template of your element
   render() {
     return html`
-      <div class="wrapper">
+       <div class="wrapper">
         <h3>${this.title}</h3>
         <h4>${this.presenter}</h4>
         <slot></slot>
       </div>
       `;
   }
+
+
+
 }
+
+
+
 // tell the browser about our tag and class it should run when it sees it
 customElements.define(TvChannel.tag, TvChannel);

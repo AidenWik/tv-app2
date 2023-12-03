@@ -1,59 +1,61 @@
 // import stuff
-import { LitElement, html, css } from 'lit';
-import '@shoelace-style/shoelace/dist/components/dialog/dialog.js';
-import '@shoelace-style/shoelace/dist/components/button/button.js';
+import { LitElement, html, css } from "lit";
+import "@shoelace-style/shoelace/dist/components/dialog/dialog.js";
+import "@shoelace-style/shoelace/dist/components/button/button.js";
 import "./tv-channel.js";
+import { unsafeHTML } from "lit/directives/unsafe-html.js";
 
 export class TvApp extends LitElement {
   // defaults
   constructor() {
     super();
-    this.name = '';
+    this.name = "";
     this.source = new URL('../assets/channels.json', import.meta.url).href;
     this.listings = [];
     this.contentSource = '../assets/1.html';
     this.contentListings = [];
-    this.location = '';
+    this.location = "";
     this.activeIndex = 0;
     this.activeTimer = false;
     this.timers = new Map();
-    this.content = '';
+    this.content = "";
     this.activeItem = {
       title: null,
       id: null,
       description: null,
     };
+
   }
+
   // convention I enjoy using to define the tag's name
   static get tag() {
-    return 'tv-app';
+    return "tv-app";
   }
   // LitElement convention so we update render() when values change
   static get properties() {
     return {
-      name: { type: String },
-      source: { type: String },
-      listings: { type: Array },
-      activeItem: { type: Object },
-      activeIndex: { type: Number },
-      activeTimer: { type: Boolean},
-      timers: { type: Object },
-      content: { type: String },
-      contentListings: { type: Array },
-      location: { type: String },
-
-    };
-  }
+    name: { type: String },
+    source: { type: String },
+    listings: { type: Array },
+    activeItem: { type: Object },
+    activeIndex: { type: Number },
+    activeTimer: { type: Boolean},
+    timers: { type: Object },
+    content: { type: String },
+    contentListings: { type: Array },
+    location: { type: String },
+    activeContent: { type: String },
+  };
+}
   // LitElement convention for applying styles JUST to our element
   static get styles() {
     return [
       css`
-      :host {
+        :host {
         display: block;
         margin: 16px;
         padding: 16px;
       }
-
       .container {
         display: flex;
         flex-direction: column;
@@ -90,7 +92,6 @@ export class TvApp extends LitElement {
         justify-content: space-between;
         width: 100%;
         height: 100%;
-
       }
       /* The tv-channel items should be */
       tv-channel {
@@ -102,12 +103,9 @@ export class TvApp extends LitElement {
       }
       .course-topics {
         width: 25.7%; /* Adjust width for the course topics */
-
       }
-
       .content-wrapper {
         width: 74.3%; /* Adjust width for the content */
-
       }
       .activeTitle {
         display: flex;
@@ -142,19 +140,19 @@ export class TvApp extends LitElement {
         left: 0;
       }
 
-      `
+      `,
     ];
   }
-  // LitElement rendering template of your element
+
   render() {
     return html`
-      <div class="container">
-        <div class="time-wrapper">
-        <h1>${this.name}</h1>
-        <div class="time-remaining">Time Remaining: </div>
-        </div>
-        <div class="mid-wrapper">
-        <div class="course-topics">
+    <div class="container">
+    <div class="time-wrapper">
+    <h1>${this.name}</h1>
+    <div class="time-remaining">Time Remaining: </div>
+    </div>
+    <div class="mid-wrapper">
+    <div class="course-topics">
       ${
         this.listings.map(
           (item) => html`
@@ -165,53 +163,42 @@ export class TvApp extends LitElement {
               content="${item.content}"
               location ="${item.location}"
               @click="${this.itemClick}"
-
             >
             </tv-channel>
           `
         )
       }
-
       </div>
       <div class="content-wrapper">
         <div class="activeTitle">activeTitle</div>
         <div class="content">content
 
-          <button class="next" @click="${this.nextPage}">Next</button>
-          <button class="previous" @click="${this.previousPage}">Previous</button>
-        </div>
+        <button class="next" @click="${this.nextPage}">Next</button>
+        <button class="previous" @click="${this.previousPage}">Previous</button>
         </div>
       </div>
-      <div>
-      ${this.activeItem.name}
-      ${this.activeItem.description}
-        <!-- video -->
-        <!-- discord / chat - optional -->
-      </div>
-      <!-- dialog -->
-      <sl-dialog label="Dialog" class="dialog">
-      ${this.activeItem.title}
-        <sl-button slot="footer" variant="primary" @click="${this.closeDialog}">Close</sl-button>
-      </sl-dialog>
+    </div>
+    </div>
+
     `;
   }
-
   updateActiveTitle() {
     const activeIndex = this.findActiveItemIndex();
     const activeTitle = this.shadowRoot.querySelector('.activeTitle');
     activeTitle.innerHTML = this.listings[activeIndex].title;
   }
-
   updateActiveIndex() {
     this.activeIndex = this.findActiveItemIndex();
   }
-
+  closeDialog(e) {
+    const dialog = this.shadowRoot.querySelector(".dialog");
+    dialog.hide();
+  }
   updateTimeRemaining() {
     if (this.activeTimer){
       return;
     }
     console.log(this.activeIndex);
-
     const dialog = this.shadowRoot.querySelector('.dialog');
     const timeCode = this.shadowRoot.querySelector('.time-remaining');
 
@@ -234,11 +221,10 @@ export class TvApp extends LitElement {
       } else {
         this.listings[this.activeIndex].metadata.timecode--;
         setTimeout(updateTimer, 1000);
+
       }
     };
-
     this.activeTimer = true;
-
     updateTimer();
   }
 
@@ -252,15 +238,14 @@ export class TvApp extends LitElement {
     }
   }
 
-  /*This will change the active index to the previous element in the listings array*/
-  changeActiveDown(){
+   /*This will change the active index to the previous element in the listings array*/
+   changeActiveDown(){
     this.activeIndex = this.findActiveItemIndex();
     this.activeIndex = this.activeIndex - 1;
     if(this.activeIndex < 0)
       this.activeIndex = 0;
     console.log(this.activeIndex);
   }
-
   findActiveItemIndex() {
     //this.updateActiveTitle();
     const activeId = this.activeItem.id;
@@ -273,12 +258,10 @@ export class TvApp extends LitElement {
     }
     return index;
   }
-
   closeDialog(e) {
     const dialog = this.shadowRoot.querySelector('.dialog');
     dialog.hide();
   }
-
   itemClick(e) {
     console.log(e.target);
     this.activeItem = {
@@ -293,70 +276,58 @@ export class TvApp extends LitElement {
     console.log(this.activeIndex);
     console.log(this.content);
   }
-
   /*acts when the next button is clicked and goes to the next element of channels.json*/
   nextPage() {
     console.log("next page");
     /* Bring user to the next channels.json element */
     if (this.activeIndex < this.listings.length - 1)
       this.changeActiveUp();
-
-  }
-  /*acts when the previous button is clicked*/
-  previousPage() {
-    console.log("previous page");
-    /* Bring user to the previous channels.json element */
-    if(this.activeIndex > 0)
-      this.changeActiveDown();
-  }
-
-  // LitElement life cycle for when any property changes
-  updated(changedProperties) {
-    if (super.updated) {
-      super.updated(changedProperties);
     }
-    changedProperties.forEach((oldValue, propName) => {
-      if (propName === "source" && this[propName]) {
-        this.updateSourceData(this[propName]);
-      }
-    });
-  }
-  updatedContent(changedProperties) {
-    if (super.updated) {
-      super.updated(changedProperties);
+    /*acts when the previous button is clicked*/
+    previousPage() {
+      console.log("previous page");
+      /* Bring user to the previous channels.json element */
+      if(this.activeIndex > 0)
+        this.changeActiveDown();
     }
-    changedProperties.forEach((oldValue, propName) => {
-      if (propName === "contentSource" && this[propName]) {
-        this.updateContentSourceData(this[propName]);
-      }
-    });
-  }
 
-  async updateSourceData(source) {
-    await fetch(source).then((resp) => resp.ok ? resp.json() : []).then((responseData) => {
-      if (responseData.status === 200 && responseData.data.items && responseData.data.items.length > 0) {
-        this.listings = [...responseData.data.items];
-        console.log(this.listings);
+    updatedContent(changedProperties) {
+      if (super.updated) {
+        super.updated(changedProperties);
       }
-    });
-  }
-  async updateContentSourceData(contentSource) {
-    fetch(contentSource)
-     .then(response => response.text())
-      .then(text => console.log(text))
-      .catch(err => console.log(err));
-    await fetch(contentSource) // fetch the content
-      .then(function(response) {
-        return response.text();
-      })
-      .then(function(html) {
-        var parser = new DOMParser();
-        var doc = parser.parseFromString(html, "text/html");
-        this.content = doc;
-        console.log(doc);
+      changedProperties.forEach((oldValue, propName) => {
+        if (propName === "contentSource" && this[propName]) {
+          this.updateContentSourceData(this[propName]);
+        }
       });
-  }
+    }
+    async updateSourceData(source) {
+      await fetch(source).then((resp) => resp.ok ? resp.json() : []).then((responseData) => {
+        if (responseData.status === 200 && responseData.data.items && responseData.data.items.length > 0) {
+          this.listings = [...responseData.data.items];
+          console.log(this.listings);
+        }
+      });
+    }
+    async updateContentSourceData(contentSource) {
+      fetch(contentSource)
+       .then(response => response.text())
+        .then(text => console.log(text))
+        .catch(err => console.log(err));
+      await fetch(contentSource) // fetch the content
+        .then(function(response) {
+          return response.text();
+        })
+        .then(function(html) {
+          var parser = new DOMParser();
+          var doc = parser.parseFromString(html, "text/html");
+          this.content = doc;
+          console.log(doc);
+        });
+      }
+    }
 
-}
+
+
 // tell the browser about our tag and class it should run when it sees it
 customElements.define(TvApp.tag, TvApp);
